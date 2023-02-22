@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 {
     JH_Player playerScript;
 
-    // EnemyÀÇ »óÅÂ(ÆĞÅÏ)
+    // Enemyì˜ ìƒíƒœ(íŒ¨í„´)
     GameObject meleeArea;
     GameObject magicFactory;
     GameObject fireFactory;
@@ -27,8 +27,8 @@ public class Enemy : MonoBehaviour
     GameObject mouth;
 
     Vector3 playerpos;
-    Vector3 lookVec; // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ¿¹Ãø¿ë
-    bool isLook; // ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸´Â ÇÃ·¡±×
+    Vector3 lookVec; // í”Œë ˆì´ì–´ ì›€ì§ì„ ì˜ˆì¸¡ìš©
+    bool isLook; // í”Œë ˆì´ì–´ ë°”ë¼ë³´ëŠ” í”Œë˜ê·¸
     float currentTime = 0;
     
 
@@ -44,8 +44,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        playerTarget = GameObject.Find("Player");                // target = ÇÃ·¹ÀÌ¾î
-        playerpos = playerTarget.transform.position;             // targetpos = ÇÃ·¹ÀÌ¾î.position
+        playerTarget = GameObject.Find("Player");                // target = í”Œë ˆì´ì–´
+        playerpos = playerTarget.transform.position;             // targetpos = í”Œë ˆì´ì–´.position
         magicFactory = (GameObject)Resources.Load("Prefabs/Magic");
         fireFactory = (GameObject)Resources.Load("Prefabs/Fire");
         hitFactory = (GameObject)Resources.Load("Prefabs/Hit_04");
@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour
     
     void Update()
     {
-        if (isLook)                 // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¼ ¶§ ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ¿¹Ãø
+        if (isLook)                 // í”Œë ˆì´ì–´ë¥¼ ë°”ë¼ë³¼ ë•Œ í”Œë ˆì´ì–´ ì›€ì§ì„ ì˜ˆì¸¡
         {
             //float h = Input.GetAxisRaw("Horizontal");
             //float v = Input.GetAxisRaw("Vertical");
@@ -105,8 +105,8 @@ public class Enemy : MonoBehaviour
         if (!playerScript.isDie)
         {
             Debug.Log("ThinkLand");
-            int randLand = Random.Range(0, 10);             // ·£´ıÀ¸·Î ÆĞÅÏ °áÁ¤
-            yield return new WaitForSeconds(1.0f);              // ÆĞÅÏ »çÀÌÀÇ ½Ã°£. Âª¾ÆÁú¼ö·Ï ³­ÀÌµµ ¾î·Á¿öÁü.
+            int randLand = Random.Range(0, 10);             // ëœë¤ìœ¼ë¡œ íŒ¨í„´ ê²°ì •
+            yield return new WaitForSeconds(1.0f);              // íŒ¨í„´ ì‚¬ì´ì˜ ì‹œê°„. ì§§ì•„ì§ˆìˆ˜ë¡ ë‚œì´ë„ ì–´ë ¤ì›Œì§.
             switch (randLand)
             {
                 case 0:
@@ -116,24 +116,19 @@ public class Enemy : MonoBehaviour
                 case 2:
                     StartCoroutine(EnemyLandToAir());
                     break;
-
                 case 3:
                 case 4:
                 case 5:
                     StartCoroutine(EnemyMagicAttackLand());
                     break;
-
                 case 6:
                 case 7:
                     StartCoroutine(EnemyDashAttack());
                     break;
-
-
                 case 8:
                 case 9:
                     StartCoroutine(EnemyBiteAttack());
                     break;
-
             }
         }
     }
@@ -143,61 +138,55 @@ public class Enemy : MonoBehaviour
         if (!playerScript.isDie)
         {
             Debug.Log("ThinkAir");
-            int randAir = Random.Range(0, 10);             // ·£´ıÀ¸·Î ÆĞÅÏ °áÁ¤
+            int randAir = Random.Range(0, 10);             // ëœë¤ìœ¼ë¡œ íŒ¨í„´ ê²°ì •
             yield return new WaitForSeconds(1.0f);
             switch (randAir)
             {
                 case 0:
                     StartCoroutine(EnemyIdleAir());
                     break;
-
                 case 1:
                     StartCoroutine(EnemyMoveAir());
                     break;
-
                 case 2:
                 case 3:
                     StartCoroutine(EnemyAirToLand());
                     break;
-
                 case 4:
                 case 5:
                     StartCoroutine(EnemyMagicAttackAir());
                     break;
-
                 case 6:
                 case 7:
                     StartCoroutine(EnemyGlidingAttack());
                     break;
-
                 case 8:
                 case 9:
                     StartCoroutine(EnemyDescentAttack());
                     break;
-
             }
         }
     }
 
-    IEnumerator EnemyIdleAir()          // °øÁß) ±âº»»óÅÂ
+    IEnumerator EnemyIdleAir()          // ê³µì¤‘) ê¸°ë³¸ìƒíƒœ
     {
-        Debug.Log("°øÁß ±âº»");
+        Debug.Log("ê³µì¤‘ ê¸°ë³¸");
         anim.SetTrigger("doIdle");
         
-        float motionTime = 2.0f;                // motion ½Ã°£
-        float delta = 0.06f;                    // sinÀÇ ÁøÆø(À§¾Æ·¡ ÃÖ´ëÄ¡)
-        float speed = 6.3f;                     // Áøµ¿ ¼Óµµ(speed)
-        currentTime = 0;                        // ÇöÀç½Ã°£ ÃÊ±âÈ­
+        float motionTime = 2.0f;                // motion ì‹œê°„
+        float delta = 0.06f;                    // sinì˜ ì§„í­(ìœ„ì•„ë˜ ìµœëŒ€ì¹˜)
+        float speed = 6.3f;                     // ì§„ë™ ì†ë„(speed)
+        currentTime = 0;                        // í˜„ì¬ì‹œê°„ ì´ˆê¸°í™”
 
         while (true)
         {
-            currentTime += Time.deltaTime;          // ÇöÀç½Ã°£ÀÌ Èê·¯¼­
-            if (currentTime < motionTime)           // ¸ğ¼Ç½Ã°£À» ÃÊ°úÇÏ±â Àü±îÁö
+            currentTime += Time.deltaTime;          // í˜„ì¬ì‹œê°„ì´ í˜ëŸ¬ì„œ
+            if (currentTime < motionTime)           // ëª¨ì…˜ì‹œê°„ì„ ì´ˆê³¼í•˜ê¸° ì „ê¹Œì§€
             {
-                Vector3 pos = transform.position;               // ³» ÇöÀçÀ§Ä¡
-                transform.LookAt(playerTarget.transform);       // ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸±â
-                pos.y += delta * Mathf.Sin(Time.time * speed);  // y¹æÇâÀ¸·Î Mathf.SinÇÔ¼öÀÇ ÇüÅÂ·Î ¼Óµµ¿¡ µû¶ó ¿òÁ÷ÀÓ. deltaTimeÀ» »ç¿ëÇÏ¸é 1ÇÁ·¹ÀÓ ÈÄ Á¤ÁöÇÔ.
-                transform.position = pos;                       // À§Ä¡º¯°æ
+                Vector3 pos = transform.position;               // ë‚´ í˜„ì¬ìœ„ì¹˜
+                transform.LookAt(playerTarget.transform);       // í”Œë ˆì´ì–´ ë°”ë¼ë³´ê¸°
+                pos.y += delta * Mathf.Sin(Time.time * speed);  // yë°©í–¥ìœ¼ë¡œ Mathf.Siní•¨ìˆ˜ì˜ í˜•íƒœë¡œ ì†ë„ì— ë”°ë¼ ì›€ì§ì„. deltaTimeì„ ì‚¬ìš©í•˜ë©´ 1í”„ë ˆì„ í›„ ì •ì§€í•¨.
+                transform.position = pos;                       // ìœ„ì¹˜ë³€ê²½
 
             }
             else
@@ -209,45 +198,45 @@ public class Enemy : MonoBehaviour
         }
 
         //StartCoroutine(MotionTest());
-        StartCoroutine(EnemyMoveAir());                            // ÆĞÅÏ¼±ÅÃÀ¸·Î
+        StartCoroutine(EnemyMoveAir());                            // íŒ¨í„´ì„ íƒìœ¼ë¡œ
         
     }
     
-    IEnumerator EnemyMoveAir()          // °øÁß) ÀÌµ¿
+    IEnumerator EnemyMoveAir()          // ê³µì¤‘) ì´ë™
     {
-        Debug.Log("°øÁßÀÌµ¿");
+        Debug.Log("ê³µì¤‘ì´ë™");
         anim.SetTrigger("doMoveAir");
 
-        float speed = 80;                       // È¾ÀÌµ¿ ¼Óµµ
-        float moveAirSpeed = 0.4f;              // Á¾ÀÌµ¿ ¼Óµµ
-        float motionTime = 2.0f;                // ¸ğ¼Ç ½Ã°£
-        Vector3 pos = transform.position;       // ³» ÇöÀçÀ§Ä¡
-        currentTime = 0;                        // ÇöÀç½Ã°£ ÃÊ±âÈ­
+        float speed = 80;                       // íš¡ì´ë™ ì†ë„
+        float moveAirSpeed = 0.4f;              // ì¢…ì´ë™ ì†ë„
+        float motionTime = 2.0f;                // ëª¨ì…˜ ì‹œê°„
+        Vector3 pos = transform.position;       // ë‚´ í˜„ì¬ìœ„ì¹˜
+        currentTime = 0;                        // í˜„ì¬ì‹œê°„ ì´ˆê¸°í™”
         int rand = Random.Range(0, 2);
 
         while (true)
         {
             if (rand == 0)
             {
-                currentTime += Time.deltaTime;                                                  // ÇöÀç½Ã°£ÀÌ Èê·¯¼­
-                if (currentTime < motionTime * 0.25f)                                            // ÀüÃ¼ ¸ğ¼Ç ½Ã°£ÀÇ 1/2Àº
+                currentTime += Time.deltaTime;                                                  // í˜„ì¬ì‹œê°„ì´ í˜ëŸ¬ì„œ
+                if (currentTime < motionTime * 0.25f)                                            // ì „ì²´ ëª¨ì…˜ ì‹œê°„ì˜ 1/2ì€
                 {
                     pos = transform.position;
-                    transform.RotateAround(Vector3.zero, Vector3.down, speed * Time.deltaTime); // Áß½ÉÁ¡ ±âÁØÀ¸·Î È¸ÀüÀÌµ¿
-                    pos.y += moveAirSpeed * 0.2f;                                               // yÃà »ó½Â
+                    transform.RotateAround(Vector3.zero, Vector3.down, speed * Time.deltaTime); // ì¤‘ì‹¬ì  ê¸°ì¤€ìœ¼ë¡œ íšŒì „ì´ë™
+                    pos.y += moveAirSpeed * 0.2f;                                               // yì¶• ìƒìŠ¹
                     transform.position = pos;
-                    transform.LookAt(playerTarget.transform);                                   // ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸±â
+                    transform.LookAt(playerTarget.transform);                                   // í”Œë ˆì´ì–´ ë°”ë¼ë³´ê¸°
                 }
-                if (currentTime < motionTime * 0.75f)                                           // ÀüÃ¼ ¸ğ¼Ç ½Ã°£ÀÇ 3/4±îÁö´Â
+                if (currentTime < motionTime * 0.75f)                                           // ì „ì²´ ëª¨ì…˜ ì‹œê°„ì˜ 3/4ê¹Œì§€ëŠ”
                 {
 
                     transform.RotateAround(Vector3.zero, Vector3.down, speed * Time.deltaTime);
                     transform.LookAt(playerTarget.transform);
                 }
-                else if (currentTime < motionTime)                                              // ¸ğ¼Ç½Ã°£±îÁö
+                else if (currentTime < motionTime)                                              // ëª¨ì…˜ì‹œê°„ê¹Œì§€
                 {
                     pos = transform.position;
-                    pos.y -= moveAirSpeed * 0.2f;                                               // yÃà ÇÏ°­
+                    pos.y -= moveAirSpeed * 0.2f;                                               // yì¶• í•˜ê°•
                     transform.position = pos;
                     transform.RotateAround(Vector3.zero, Vector3.down, speed * Time.deltaTime);
                     transform.LookAt(playerTarget.transform);
@@ -259,25 +248,25 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                currentTime += Time.deltaTime;                                                  // ÇöÀç½Ã°£ÀÌ Èê·¯¼­
-                if (currentTime < motionTime * 0.25f)                                            // ÀüÃ¼ ¸ğ¼Ç ½Ã°£ÀÇ 1/2Àº
+                currentTime += Time.deltaTime;                                                  // í˜„ì¬ì‹œê°„ì´ í˜ëŸ¬ì„œ
+                if (currentTime < motionTime * 0.25f)                                            // ì „ì²´ ëª¨ì…˜ ì‹œê°„ì˜ 1/2ì€
                 {
                     pos = transform.position;
-                    transform.RotateAround(Vector3.zero, Vector3.up, speed * Time.deltaTime); // Áß½ÉÁ¡ ±âÁØÀ¸·Î È¸ÀüÀÌµ¿
-                    pos.y += moveAirSpeed * 0.2f;                                               // yÃà »ó½Â
+                    transform.RotateAround(Vector3.zero, Vector3.up, speed * Time.deltaTime); // ì¤‘ì‹¬ì  ê¸°ì¤€ìœ¼ë¡œ íšŒì „ì´ë™
+                    pos.y += moveAirSpeed * 0.2f;                                               // yì¶• ìƒìŠ¹
                     transform.position = pos;
-                    transform.LookAt(playerTarget.transform);                                   // ÇÃ·¹ÀÌ¾î ¹Ù¶óº¸±â
+                    transform.LookAt(playerTarget.transform);                                   // í”Œë ˆì´ì–´ ë°”ë¼ë³´ê¸°
                 }
-                if (currentTime < motionTime * 0.75f)                                           // ÀüÃ¼ ¸ğ¼Ç ½Ã°£ÀÇ 3/4±îÁö´Â
+                if (currentTime < motionTime * 0.75f)                                           // ì „ì²´ ëª¨ì…˜ ì‹œê°„ì˜ 3/4ê¹Œì§€ëŠ”
                 {
 
                     transform.RotateAround(Vector3.zero, Vector3.up, speed * Time.deltaTime);
                     transform.LookAt(playerTarget.transform);
                 }
-                else if (currentTime < motionTime)                                              // ¸ğ¼Ç½Ã°£±îÁö
+                else if (currentTime < motionTime)                                              // ëª¨ì…˜ì‹œê°„ê¹Œì§€
                 {
                     pos = transform.position;
-                    pos.y -= moveAirSpeed * 0.2f;                                               // yÃà ÇÏ°­
+                    pos.y -= moveAirSpeed * 0.2f;                                               // yì¶• í•˜ê°•
                     transform.position = pos;
                     transform.RotateAround(Vector3.zero, Vector3.up, speed * Time.deltaTime);
                     transform.LookAt(playerTarget.transform);
@@ -291,13 +280,13 @@ public class Enemy : MonoBehaviour
             
         }
         StartCoroutine(EnemyDescentAttack());
-        //StartCoroutine(ThinkAir());                                                        // ÆĞÅÏ¼±ÅÃÀ¸·Î
+        //StartCoroutine(ThinkAir());                                                        // íŒ¨í„´ì„ íƒìœ¼ë¡œ
 
     }
 
-    IEnumerator EnemyAirToLand()        // °øÁß > Áö»ó) ÀÌµ¿
+    IEnumerator EnemyAirToLand()        // ê³µì¤‘ > ì§€ìƒ) ì´ë™
     {
-        Debug.Log("°­ÇÏÀÌµ¿");
+        Debug.Log("ê°•í•˜ì´ë™");
         anim.SetTrigger("doAirToLand");
         Vector3 dir;
         dir = Vector3.zero;
@@ -323,9 +312,9 @@ public class Enemy : MonoBehaviour
 
     }
     
-    IEnumerator EnemyLandToAir()        // Áö»ó > °øÁß) ÀÌµ¿
+    IEnumerator EnemyLandToAir()        // ì§€ìƒ > ê³µì¤‘) ì´ë™
     {
-        Debug.Log("»ó½ÂÀÌµ¿");
+        Debug.Log("ìƒìŠ¹ì´ë™");
         anim.SetTrigger("doLandToAir");
         StartCoroutine(CameraShake.cameraShake.Shake(0.1f, 0.5f));
         
@@ -338,7 +327,7 @@ public class Enemy : MonoBehaviour
         GameObject tosky = Instantiate(toskyFactory);
         tosky.transform.position = transform.position;
 
-        // x, zÁÂÇ¥´Â ·£´ı
+        // x, zì¢Œí‘œëŠ” ëœë¤
         if (transform.position.x <= 0)
         {
             posx = Random.Range(-40f, -30f);
@@ -357,7 +346,7 @@ public class Enemy : MonoBehaviour
             posz = Random.Range(30f, 40f);
         }
 
-        // yÁÂÇ¥´Â 30 °íÁ¤
+        // yì¢Œí‘œëŠ” 30 ê³ ì •
         destination = new Vector3(posx, posy, posz);
 
         while (true)
@@ -380,9 +369,9 @@ public class Enemy : MonoBehaviour
         //StartCoroutine(EnemyAirToLand());
     }
 
-    IEnumerator EnemyMagicAttackAir()    // Áö»ó or °øÁß) ¸¶¹ı °ø°İ
+    IEnumerator EnemyMagicAttackAir()    // ì§€ìƒ or ê³µì¤‘) ë§ˆë²• ê³µê²©
     {
-        Debug.Log("°øÁß¸¶¹ı");
+        Debug.Log("ê³µì¤‘ë§ˆë²•");
         anim.SetTrigger("doMagicAttackAir");
 
         Vector3 m1;
@@ -418,8 +407,8 @@ public class Enemy : MonoBehaviour
         {
             currentTime += Time.deltaTime;
 
-            // ¾ÈÂÊ¿¡¼­ºÎÅÍ ¼ø¼­´ë·Î ÇÏ³ª¾¿ »ı¼º
-            // ¼ø¼­´ë·Î ÇÏ³ª¾¿ ¹ß»ç
+            // ì•ˆìª½ì—ì„œë¶€í„° ìˆœì„œëŒ€ë¡œ í•˜ë‚˜ì”© ìƒì„±
+            // ìˆœì„œëŒ€ë¡œ í•˜ë‚˜ì”© ë°œì‚¬
 
             if (currentTime > 3.0f)
             {
@@ -516,9 +505,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator EnemyMagicAttackLand()    // Áö»ó or °øÁß) ¸¶¹ı °ø°İ
+    IEnumerator EnemyMagicAttackLand()    // ì§€ìƒ or ê³µì¤‘) ë§ˆë²• ê³µê²©
     {
-        Debug.Log("Áö»ó¸¶¹ı");
+        Debug.Log("ì§€ìƒë§ˆë²•");
         anim.SetTrigger("doMagicAttackLand");
 
         Vector3 m1;
@@ -549,8 +538,8 @@ public class Enemy : MonoBehaviour
         {
             currentTime += Time.deltaTime;
 
-            // ¾ÈÂÊ¿¡¼­ºÎÅÍ ¼ø¼­´ë·Î ÇÏ³ª¾¿ »ı¼º
-            // ¼ø¼­´ë·Î ÇÏ³ª¾¿ ¹ß»ç
+            // ì•ˆìª½ì—ì„œë¶€í„° ìˆœì„œëŒ€ë¡œ í•˜ë‚˜ì”© ìƒì„±
+            // ìˆœì„œëŒ€ë¡œ í•˜ë‚˜ì”© ë°œì‚¬
 
             if (currentTime > 2.7f)
             {
@@ -641,9 +630,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator EnemyBiteAttack()      // Áö»ó) ¹°±â °ø°İ
+    IEnumerator EnemyBiteAttack()      // ì§€ìƒ) ë¬¼ê¸° ê³µê²©
     {
-        Debug.Log("Áö»ó¹°±â");
+        Debug.Log("ì§€ìƒë¬¼ê¸°");
         float currentTime = 0;
         bool isFind = true;
         float biteTime1 = 1.05f;
@@ -654,7 +643,7 @@ public class Enemy : MonoBehaviour
 
         while (true)
         {
-            // °ø°İÆÇÁ¤ È°¼ºÈ­
+            // ê³µê²©íŒì • í™œì„±í™”
             
             currentTime += Time.deltaTime;
             if (isFind == true)
@@ -667,7 +656,7 @@ public class Enemy : MonoBehaviour
 
             if (currentTime < biteTime1)
             {
-                print("¹°±â1");
+                print("ë¬¼ê¸°1");
                
             }
             else if (currentTime > biteTime1 && currentTime < 2.0f)
@@ -677,12 +666,12 @@ public class Enemy : MonoBehaviour
             else if (currentTime > biteTime1 && currentTime < biteTime2)
             {
                 anim.SetTrigger("doBiteAttack2");
-                print("¹°±â2");
+                print("ë¬¼ê¸°2");
                 
             }
             else
             {
-                // °ø°İÆÇÁ¤ ºñÈ°¼ºÈ­
+                // ê³µê²©íŒì • ë¹„í™œì„±í™”
                 break;
             }
             yield return null;
@@ -694,9 +683,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator EnemyDashAttack()       // Áö»ó) µ¹Áø °ø°İ
+    IEnumerator EnemyDashAttack()       // ì§€ìƒ) ëŒì§„ ê³µê²©
     {
-        Debug.Log("Áö»óµ¹Áø");
+        Debug.Log("ì§€ìƒëŒì§„");
         
         int rand;
         float speed = 20f;
@@ -735,7 +724,7 @@ public class Enemy : MonoBehaviour
                     transform.position += dir * speed * Time.deltaTime;
                     //GameObject dash = Instantiate(dashFactory);
                     //dash.transform.position = mouth.transform.position;
-                    // °ø°İÆÇÁ¤ È°¼ºÈ­
+                    // ê³µê²©íŒì • í™œì„±í™”
 
                 }
                 else if (currentTime > delayTime)
@@ -758,9 +747,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator EnemyGlidingAttack()    // °øÁß) ºñÇà °ø°İ
+    IEnumerator EnemyGlidingAttack()    // ê³µì¤‘) ë¹„í–‰ ê³µê²©
     {
-        Debug.Log("È°°­°ø°İ");
+        Debug.Log("í™œê°•ê³µê²©");
         anim.SetTrigger("doGlidingAttack");
 
         float currentTime = 0;
@@ -776,7 +765,7 @@ public class Enemy : MonoBehaviour
 
         while(true)
         {
-            // ½ÃÀÛÀ§Ä¡°¡ ¾Æ´Ï¶ó¸é ½ÃÀÛÀ§Ä¡·Î ÀÌµ¿
+            // ì‹œì‘ìœ„ì¹˜ê°€ ì•„ë‹ˆë¼ë©´ ì‹œì‘ìœ„ì¹˜ë¡œ ì´ë™
             if (isarrive == true)
             {
                 if (transform.position.z >= 49.5f || transform.position.z <= -49.5f)
@@ -902,9 +891,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator EnemyDescentAttack()    // °øÁß > Áö»ó) °­ÇÏ °ø°İ
+    IEnumerator EnemyDescentAttack()    // ê³µì¤‘ > ì§€ìƒ) ê°•í•˜ ê³µê²©
     {
-        Debug.Log("°­ÇÏ°ø°İ");
+        Debug.Log("ê°•í•˜ê³µê²©");
         anim.SetTrigger("doDescentAttack");
 
         Vector3 dir;
@@ -913,7 +902,7 @@ public class Enemy : MonoBehaviour
         dir.y = 0.5f;
         dir.Normalize();
         //dir += playerTarget.transform.forward * 10;
-        // °ø°İÆÇÁ¤ È°¼ºÈ­
+        // ê³µê²©íŒì • í™œì„±í™”
         meleeArea.SetActive(true);
 
         while (true)
@@ -961,7 +950,7 @@ public class Enemy : MonoBehaviour
     IEnumerator EnemyHowlingAttack()
     {
 
-        Debug.Log("¿ïºÎÂ¢±â");
+        Debug.Log("ìš¸ë¶€ì§–ê¸°");
         anim.SetTrigger("doHowlingAttack");
         float distance;
         GameObject mouth = GameObject.Find("Mouth");
@@ -987,13 +976,13 @@ public class Enemy : MonoBehaviour
 
                 if (distance < 10)
                 {
-                    // ½ºÅÏ ¿À·¡°É¸®±â
-                    print("½ºÅÏ ¿À·¡");
+                    // ìŠ¤í„´ ì˜¤ë˜ê±¸ë¦¬ê¸°
+                    print("ìŠ¤í„´ ì˜¤ë˜");
                 }
                 else if (distance < 20)
                 {
-                    // ½ºÅÏ Âª°Ô
-                    print("½ºÅÏ Âª°Ô");
+                    // ìŠ¤í„´ ì§§ê²Œ
+                    print("ìŠ¤í„´ ì§§ê²Œ");
                 }
             }
             else
@@ -1021,7 +1010,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ °ø°İ¿¡ ¸ÂÀ¸¸é µ¥¹ÌÁö¸¦ ÀÔ´Â´Ù. 
+        // í”Œë ˆì´ì–´ì˜ ê³µê²©ì— ë§ìœ¼ë©´ ë°ë¯¸ì§€ë¥¼ ì…ëŠ”ë‹¤. 
         if (other.gameObject.name.Contains("SwordAura"))
         {
             EnemyHP.enemyHP.EnemyAddDamage();
