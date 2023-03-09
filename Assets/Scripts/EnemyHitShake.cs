@@ -26,7 +26,7 @@ public class EnemyHitShake : MonoBehaviour
         while (0 <= duration)
         {
             enemy.transform.position = Random.insideUnitSphere * magnitude + enemyOriginalPos;
-            = Time.deltaTime;
+            duration -= Time.deltaTime;
             yield return null;
         }
         enemy.transform.position = enemyOriginalPos;
