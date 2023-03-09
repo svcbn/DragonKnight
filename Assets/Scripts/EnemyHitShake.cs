@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ¸Â¾ÒÀ»¶§ Èçµç´Ù
+// Â¸Ã‚Â¾Ã’Ã€Â»Â¶Â§ ÃˆÃ§ÂµÃ§Â´Ã™
 public class EnemyHitShake : MonoBehaviour
 {
     public static EnemyHitShake enemyShake;
@@ -23,12 +23,10 @@ public class EnemyHitShake : MonoBehaviour
 
     public IEnumerator EnemyShake(float duration, float magnitude)
     {
-        float timer = 0;
-
-        while (timer <= duration)
+        while (0 <= duration)
         {
             enemy.transform.position = Random.insideUnitSphere * magnitude + enemyOriginalPos;
-            timer += Time.deltaTime;
+            = Time.deltaTime;
             yield return null;
         }
         enemy.transform.position = enemyOriginalPos;
