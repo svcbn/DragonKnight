@@ -32,17 +32,14 @@ public class Test_Camera : MonoBehaviour
 		
 	}
 
+
     private float GetAngle(Vector3 me, Vector3 target)
     {
-
-
-		float zbetween = target.z - me.z;
+	float zbetween = target.z - me.z;
         float xbetween = target.x - me.x;
         float theta = Mathf.Atan2(xbetween, zbetween) * Mathf.Rad2Deg;
         return theta;
-
     }
-
     
 
     private void LateUpdate() {
