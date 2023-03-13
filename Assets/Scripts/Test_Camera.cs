@@ -72,14 +72,15 @@ public class Test_Camera : MonoBehaviour
 		MoveSmoothTime = 0.04f;
         }
 
-		if (_targets.Length == 0)
-			return;
+	if (_targets.Length == 0)
+		return;
 		
-		var targetPositionAndRotation = TargetPositionAndRotation(_targets);
+	var targetPositionAndRotation = TargetPositionAndRotation(_targets);
 
-		Vector3 velocity = Vector3.zero;
-		transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);
-		transform.rotation = targetPositionAndRotation.Rotation;
+	Vector3 velocity = Vector3.zero;
+	transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);
+	transform.rotation = targetPositionAndRotation.Rotation;
+	
 	}
 	
 	PositionAndRotation TargetPositionAndRotation(GameObject[] targets)
