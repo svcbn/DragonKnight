@@ -49,26 +49,27 @@ public class Test_Camera : MonoBehaviour
 		float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
 
 
-		if(angle < 0)
+	if(angle < 0)
         {
-			Yaw = angle + 360;
+		Yaw = angle + 360;
         }
         else
         {
-			Yaw = angle;
+		Yaw = angle;
         }
 
-		if (distance < 15f || enemy.transform.position.y < 5)
+
+	if (distance < 15f || enemy.transform.position.y < 5)
         {
-			PaddingUp = 10f;
-			PaddingDown = 3f;
-			MoveSmoothTime = 0.02f;
+		PaddingUp = 10f;
+		PaddingDown = 3f;
+		MoveSmoothTime = 0.02f;
         }
-		else
+	else
         {
-			PaddingUp = 20f;
-			PaddingDown = 5;
-			MoveSmoothTime = 0.04f;
+		PaddingUp = 20f;
+		PaddingDown = 5;
+		MoveSmoothTime = 0.04f;
         }
 
 		if (_targets.Length == 0)
