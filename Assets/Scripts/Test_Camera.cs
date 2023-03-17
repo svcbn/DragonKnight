@@ -82,18 +82,18 @@ public class Test_Camera : MonoBehaviour
 	
 	}
 	
-	PositionAndRotation TargetPositionAndRotation(GameObject[] targets)
+	PositionAndRotation TargetPositionAndRotation(GameObject[] targets)	// target으로 지정한 GameObject들의 배열로부터 camera Position과 Rotation 결정
 	{
-		float halfVerticalFovRad = (_camera.fieldOfView * Mathf.Deg2Rad) / 2f;
-		float halfHorizontalFovRad = Mathf.Atan(Mathf.Tan(halfVerticalFovRad) * _camera.aspect);
+		float halfVerticalFovRad = (_camera.fieldOfView * Mathf.Deg2Rad) / 2f;				// camera FOV 에서 수직rad각 theta 구하기
+		float halfHorizontalFovRad = Mathf.Atan(Mathf.Tan(halfVerticalFovRad) * _camera.aspect);	// camera 화면비와 theta 역산으로 수평rad각 gamma 구하기
 
-		var rotation = Quaternion.Euler(Pitch, Yaw, Roll);
-		var inverseRotation = Quaternion.Inverse(rotation);
+		var rotation = Quaternion.Euler(Pitch, Yaw, Roll);	// camera 회전보정값. 순서대로 (x축, y축, z축) 회전
+		var inverseRotation = Quaternion.Inverse(rotation);	// 회전보정값의 inverse
 
-		var targetsRotatedToCameraIdentity = targets.Select(target => inverseRotation * target.transform.position).ToArray();
+		var targetsRotatedToCameraIdentity = targets.Select(target => inverseRotation * target.transform.position).ToArray();	// target배열의 GameObject들 위치에서 회전보정값의 inverse 연산으로 camera 화면 내 위치 구하기
 
-		float furthestPointDistanceFromCamera = targetsRotatedToCameraIdentity.Max(target => target.z);
-		float projectionPlaneZ = furthestPointDistanceFromCamera + 3f;
+		float furthestPointDistanceFromCamera = targetsRotatedToCameraIdentity.Max(target => target.z);		// camera 에서 z좌표거리로 가장 멀리 떨어진 GameObject 거리
+		float projectionPlaneZ = furthestPointDistanceFromCamera + 3f;		
 
 		ProjectionHits viewProjectionLeftAndRightEdgeHits = 
 			ViewProjectionEdgeHits(targetsRotatedToCameraIdentity, ProjectionEdgeHits.LEFT_RIGHT, projectionPlaneZ, halfHorizontalFovRad).AddPadding(PaddingRight, PaddingLeft);
@@ -106,10 +106,10 @@ public class Test_Camera : MonoBehaviour
 				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionLeftAndRightEdgeHits, halfHorizontalFovRad)
 		);
 
-		Vector3 cameraPositionIdentity = new Vector3(
-			(viewProjectionLeftAndRightEdgeHits.Max + viewProjectionLeftAndRightEdgeHits.Min) / 2f,
-			(viewProjectionTopAndBottomEdgeHits.Max + viewProjectionTopAndBottomEdgeHits.Min) / 2f,
-			projectionPlaneZ - requiredCameraPerpedicularDistanceFromProjectionPlane);
+		Vector3 cameraPositionIdentity = new Vector3(								// camera 위치
+			(viewProjectionLeftAndRightEdgeHits.Max + viewProjectionLeftAndRightEdgeHits.Min) / 2f,		// 좌우 최대치와 최소치의 중간점
+			(viewProjectionTopAndBottomEdgeHits.Max + viewProjectionTopAndBottomEdgeHits.Min) / 2f,		// 상하 최대치와 최소치의 중간점
+			projectionPlaneZ - requiredCameraPerpedicularDistanceFromProjectionPlane);			// 멀어져야 되는 z위치
 
 		DebugDrawProjectionRays(cameraPositionIdentity, 
 			viewProjectionLeftAndRightEdgeHits, 
@@ -120,7 +120,7 @@ public class Test_Camera : MonoBehaviour
 			halfHorizontalFovRad, 
 			halfVerticalFovRad);
 
-		return new PositionAndRotation(rotation * cameraPositionIdentity, rotation);
+		return new PositionAndRotation(rotation * cameraPositionIdentity, rotation);	//  회전보정치 보정하고 camera의 worldPosition, worldRotation 반환
 	}
 
 	private static float RequiredCameraPerpedicularDistanceFromProjectionPlane(ProjectionHits viewProjectionEdgeHits, float halfFovRad)
