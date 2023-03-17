@@ -42,12 +42,12 @@ public class Test_Camera : MonoBehaviour
     }
     
 
-    private void LateUpdate() {
-		GameObject player = GameObject.Find("Player");
-		GameObject enemy = GameObject.Find("Enemy");
-		float angle = GetAngle(player.transform.position, enemy.transform.position);
-		float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
-
+    private void LateUpdate()
+    {
+	GameObject player = GameObject.Find("Player");
+	GameObject enemy = GameObject.Find("Enemy");
+	float angle = GetAngle(player.transform.position, enemy.transform.position);
+	float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
 
 	if(angle < 0)
         {
@@ -57,7 +57,6 @@ public class Test_Camera : MonoBehaviour
         {
 		Yaw = angle;
         }
-
 
 	if (distance < 15f || enemy.transform.position.y < 5)
         {
