@@ -95,13 +95,17 @@ public class Test_Camera : MonoBehaviour
 		float furthestPointDistanceFromCamera = targetsRotatedToCameraIdentity.Max(target => target.z);		// camera 에서 z좌표거리로 가장 멀리 떨어진 GameObject 거리
 		float projectionPlaneZ = furthestPointDistanceFromCamera + 3f;		
 
-		ProjectionHits viewProjectionLeftAndRightEdgeHits = 
-			ViewProjectionEdgeHits(targetsRotatedToCameraIdentity, ProjectionEdgeHits.LEFT_RIGHT, projectionPlaneZ, halfHorizontalFovRad).AddPadding(PaddingRight, PaddingLeft);
-		ProjectionHits viewProjectionTopAndBottomEdgeHits = 
-			ViewProjectionEdgeHits(targetsRotatedToCameraIdentity, ProjectionEdgeHits.TOP_BOTTOM, projectionPlaneZ, halfVerticalFovRad).AddPadding(PaddingUp, PaddingDown);
+		ProjectionHits viewProjectionLeftAndRightEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,		//
+								    ProjectionEdgeHits.LEFT_RIGHT,
+								    projectionPlaneZ,
+								    halfHorizontalFovRad).AddPadding(PaddingRight, PaddingLeft);
 		
-		var requiredCameraPerpedicularDistanceFromProjectionPlane =
-			Mathf.Max(
+		ProjectionHits viewProjectionTopAndBottomEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,
+								    ProjectionEdgeHits.TOP_BOTTOM,
+								    projectionPlaneZ,
+								    halfVerticalFovRad).AddPadding(PaddingUp, PaddingDown);
+		
+		var requiredCameraPerpedicularDistanceFromProjectionPlane = Mathf.Max(
 				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionTopAndBottomEdgeHits, halfVerticalFovRad),
 				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionLeftAndRightEdgeHits, halfHorizontalFovRad)
 		);
@@ -120,10 +124,10 @@ public class Test_Camera : MonoBehaviour
 			halfHorizontalFovRad, 
 			halfVerticalFovRad);
 
-		return new PositionAndRotation(rotation * cameraPositionIdentity, rotation);	//  회전보정치 보정하고 camera의 worldPosition, worldRotation 반환
+		return new PositionAndRotation(rotation * cameraPositionIdentity, rotation);	//  회전 보정치 적용하고 camera의 worldPosition, worldRotation 반환
 	}
 
-	private static float RequiredCameraPerpedicularDistanceFromProjectionPlane(ProjectionHits viewProjectionEdgeHits, float halfFovRad)
+	private static float RequiredCameraPerpedicularDistanceFromProjectionPlane(ProjectionHits viewProjectionEdgeHits, float halfFovRad)	// 
 	{
 		float distanceBetweenEdgeProjectionHits = viewProjectionEdgeHits.Max - viewProjectionEdgeHits.Min;
 		return (distanceBetweenEdgeProjectionHits / 2f) / Mathf.Tan(halfFovRad);
