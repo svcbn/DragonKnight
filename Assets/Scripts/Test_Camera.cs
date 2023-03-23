@@ -133,11 +133,15 @@ public class Test_Camera : MonoBehaviour
 		return (distanceBetweenEdgeProjectionHits / 2f) / Mathf.Tan(halfFovRad);
 	}
 
-	private ProjectionHits ViewProjectionEdgeHits(IEnumerable<Vector3> targetsRotatedToCameraIdentity, ProjectionEdgeHits alongAxis, float projectionPlaneZ, float halfFovRad)
+	private ProjectionHits ViewProjectionEdgeHits(
+			IEnumerable<Vector3> targetsRotatedToCameraIdentity,
+			ProjectionEdgeHits alongAxis,
+			float projectionPlaneZ,
+			float halfFovRad)
 	{
-		float[] projectionHits = targetsRotatedToCameraIdentity
-			.SelectMany(target => TargetProjectionHits(target, alongAxis, projectionPlaneZ, halfFovRad))
-			.ToArray();
+		float[] projectionHits = targetsRotatedToCameraIdentity.SelectMany(
+				target => TargetProjectionHits(target, alongAxis, projectionPlaneZ, halfFovRad)).ToArray();
+			
 		return new ProjectionHits(projectionHits.Max(), projectionHits.Min());
 	}
 	
