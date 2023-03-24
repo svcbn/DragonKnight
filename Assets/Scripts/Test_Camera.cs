@@ -77,7 +77,7 @@ public class Test_Camera : MonoBehaviour
 	var targetPositionAndRotation = TargetPositionAndRotation(_targets);
 
 	Vector3 velocity = Vector3.zero;
-	transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);
+	transform.position = Vector3.SmoothDamp(transform.position, targetPositionAndRotation.Position, ref velocity, MoveSmoothTime);	// lerp로 서서히 이동
 	transform.rotation = targetPositionAndRotation.Rotation;
 	
 	}
@@ -95,19 +95,19 @@ public class Test_Camera : MonoBehaviour
 		float furthestPointDistanceFromCamera = targetsRotatedToCameraIdentity.Max(target => target.z);		// camera 에서 z좌표거리로 가장 멀리 떨어진 GameObject 거리
 		float projectionPlaneZ = furthestPointDistanceFromCamera + 3f;		
 
-		ProjectionHits viewProjectionLeftAndRightEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,		//
+		ProjectionHits viewProjectionLeftAndRightEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,		// 수평 최대최소치 계산
 								    ProjectionEdgeHits.LEFT_RIGHT,
 								    projectionPlaneZ,
-								    halfHorizontalFovRad).AddPadding(PaddingRight, PaddingLeft);
+								    halfHorizontalFovRad).AddPadding(PaddingRight, PaddingLeft);	// 좌우 여백 조정가능
 		
-		ProjectionHits viewProjectionTopAndBottomEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,
+		ProjectionHits viewProjectionTopAndBottomEdgeHits = ViewProjectionEdgeHits(targetsRotatedToCameraIdentity,		// 수직 최대최소치 계산
 								    ProjectionEdgeHits.TOP_BOTTOM,
 								    projectionPlaneZ,
-								    halfVerticalFovRad).AddPadding(PaddingUp, PaddingDown);
+								    halfVerticalFovRad).AddPadding(PaddingUp, PaddingDown);		// 상하 여백 조정가능
 		
-		var requiredCameraPerpedicularDistanceFromProjectionPlane = Mathf.Max(
-				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionTopAndBottomEdgeHits, halfVerticalFovRad),
-				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionLeftAndRightEdgeHits, halfHorizontalFovRad)
+		var requiredCameraPerpedicularDistanceFromProjectionPlane = Mathf.Max(								// 더 큰값으로 선택
+				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionTopAndBottomEdgeHits, halfVerticalFovRad),	// 수직축에서 필요한 거리
+				RequiredCameraPerpedicularDistanceFromProjectionPlane(viewProjectionLeftAndRightEdgeHits, halfHorizontalFovRad)	// 수평축에서 필요한 거리
 		);
 
 		Vector3 cameraPositionIdentity = new Vector3(								// camera 위치
@@ -127,27 +127,27 @@ public class Test_Camera : MonoBehaviour
 		return new PositionAndRotation(rotation * cameraPositionIdentity, rotation);	//  회전 보정치 적용하고 camera의 worldPosition, worldRotation 반환
 	}
 
-	private static float RequiredCameraPerpedicularDistanceFromProjectionPlane(ProjectionHits viewProjectionEdgeHits, float halfFovRad)	// 
+	private static float RequiredCameraPerpedicularDistanceFromProjectionPlane(ProjectionHits viewProjectionEdgeHits, float halfFovRad)	// 최대최소치 반영해서 projectionPlane까지 필요한 카메라 거리 역산 함수
 	{
 		float distanceBetweenEdgeProjectionHits = viewProjectionEdgeHits.Max - viewProjectionEdgeHits.Min;
 		return (distanceBetweenEdgeProjectionHits / 2f) / Mathf.Tan(halfFovRad);
 	}
 
-	private ProjectionHits ViewProjectionEdgeHits(
-			IEnumerable<Vector3> targetsRotatedToCameraIdentity,
-			ProjectionEdgeHits alongAxis,
-			float projectionPlaneZ,
-			float halfFovRad)
+	private ProjectionHits ViewProjectionEdgeHits(					// 축 최대최소치 계산
+			IEnumerable<Vector3> targetsRotatedToCameraIdentity,		// projectionPlane 상 위치 (회전보정치 inverse * 현위치)
+			ProjectionEdgeHits alongAxis,					// 수평, 수직 구분
+			float projectionPlaneZ,						// projectionPlane 계산치
+			float halfFovRad)						// rad각 계산치
 	{
-		float[] projectionHits = targetsRotatedToCameraIdentity.SelectMany(
+		float[] projectionHits = targetsRotatedToCameraIdentity.SelectMany(						// projectionPlane상의 targets 위치 배열
 				target => TargetProjectionHits(target, alongAxis, projectionPlaneZ, halfFovRad)).ToArray();
 			
-		return new ProjectionHits(projectionHits.Max(), projectionHits.Min());
+		return new ProjectionHits(projectionHits.Max(), projectionHits.Min());						// projectionPlane에 필요한 최대, 최소치 반환
 	}
 	
-	private float[] TargetProjectionHits(Vector3 target, ProjectionEdgeHits alongAxis, float projectionPlaneDistance, float halfFovRad)
+	private float[] TargetProjectionHits(Vector3 target, ProjectionEdgeHits alongAxis, float projectionPlaneDistance, float halfFovRad)	// projectionPlane상의 targets 위치 계산 함수
 	{
-		float distanceFromProjectionPlane = projectionPlaneDistance - target.z;
+		float distanceFromProjectionPlane = projectionPlaneDistance - target.z;			
 		float projectionHalfSpan = Mathf.Tan(halfFovRad) * distanceFromProjectionPlane;
 
 		if (alongAxis == ProjectionEdgeHits.LEFT_RIGHT)
