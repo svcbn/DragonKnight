@@ -6,10 +6,21 @@ using UnityEngine.SceneManagement;
 public class JH_SceneManager : MonoBehaviour
 {
     public static JH_SceneManager Instance;
+    
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this);
     }
+    
     public void Dragon()
     {
         SceneManager.LoadScene("DragonScene");
