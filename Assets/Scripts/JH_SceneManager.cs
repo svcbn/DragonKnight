@@ -25,35 +25,27 @@ public class JH_SceneManager : MonoBehaviour
     public void GameOver()
     {
         SceneManager.LoadScene("GameOverScene");
-        
     }
     public void Main()
     {
         SceneManager.LoadScene("MainScene");
     }
-
     public void Victory()
     {
         SceneManager.LoadScene("AfterEnemyDie");
-
     }
-
     public void MeetBoss()
     {
         SceneManager.LoadScene("MeetBoss");
     }
-
     public void Ending()
     {
-        SceneManager.LoadScene("EndingScene");
-        
+        SceneManager.LoadScene("EndingScene");       
     }
-
-   public void FireVillage()
+    public void FireVillage()
     {
         SceneManager.LoadScene("FireScene");
     }
-
     public void Exit()
     {
         Application.Quit();
